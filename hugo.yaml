@@ -1,6 +1,6 @@
 baseURL: "https://woletee.github.io/"
 locale: "en-us"
-title: "Papers & Code"
+title: "Marya's Blog"
 theme: ["PaperMod4"]
 
 enableRobotsTXT: true
@@ -29,8 +29,8 @@ markup:
 
 params:
   author: "Wolete"
-  description: "Deep dives into research papers, with a growing library of explained diffusion model papers."
-  keywords: ["diffusion models", "generative models", "machine learning", "paper explained", "DDPM"]
+  description: "Notes on AI research, including diffusion models, transformers, and model evaluation."
+  keywords: ["AI research", "machine learning", "diffusion models", "transformers", "model evaluation"]
   defaultTheme: auto
   mainSections: ["diffusion", "posts"]
   ShowReadingTime: true
@@ -45,16 +45,15 @@ params:
   displayFullLangName: true
 
   homeInfoParams:
-    Title: "Papers, explained properly"
+    Title: "Marya's Blog"
     Content: >
       I read research papers and rewrite them the way I wish they had been
       explained to me: intuition first, pictures where they help, and code you
       can actually run.
 
 
-      The current project is a growing **[library of diffusion model
-      papers](/diffusion/)** — from the 2020 paper that started it all to the
-      systems behind today's image and video generators.
+      I write about how AI models work and how we evaluate them. The
+      [diffusion paper series](/diffusion/) starts with DDPM.
 
   socialIcons:
     - name: github

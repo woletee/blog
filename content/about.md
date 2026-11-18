@@ -11,10 +11,9 @@ I read research papers and write them up the way I wish they had been explained 
 me the first time: the question before the notation, a picture wherever a picture
 helps, and code short enough to read in one sitting.
 
-The main project here is a growing **[library of diffusion model
-papers](/diffusion/)** — starting with the 2020 paper that made the whole
-approach work, and following the chain of ideas forward to the systems behind
-today's image and video generators.
+I write about how AI models work, what they can do, and how we measure their
+performance. The [diffusion paper series](/diffusion/) starts with DDPM. I also
+write about transformers and other topics in AI research.
 
 Two rules I try to hold myself to:
 
