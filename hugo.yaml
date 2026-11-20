@@ -47,13 +47,7 @@ params:
   homeInfoParams:
     Title: "Marya's Blog"
     Content: >
-      I read research papers and rewrite them the way I wish they had been
-      explained to me: intuition first, pictures where they help, and code you
-      can actually run.
-
-
-      I write about how AI models work, and I test ideas with small
-      experiments you can run yourself.
+      Small AI experiments, explained simply, with code you can run.
 
   socialIcons:
     - name: github
