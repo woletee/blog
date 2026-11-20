@@ -1,7 +1,7 @@
 ---
 title: "DDPM: How Adding Noise Taught Machines to Draw"
 date: 2026-08-23
-draft: false
+draft: true
 weight: 1
 math: true
 categories: ["Papers", "Diffusion Models"]

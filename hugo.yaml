@@ -28,7 +28,7 @@ markup:
     endLevel: 3
 
 params:
-  author: "Wolete"
+  author: "Marya"
   description: "Notes on AI research, including diffusion models, transformers, and model evaluation."
   keywords: ["AI research", "machine learning", "diffusion models", "transformers", "model evaluation"]
   defaultTheme: auto
@@ -52,8 +52,8 @@ params:
       can actually run.
 
 
-      I write about how AI models work and how we evaluate them. The
-      [diffusion paper series](/diffusion/) starts with DDPM.
+      I write about how AI models work, and I test ideas with small
+      experiments you can run yourself.
 
   socialIcons:
     - name: github
@@ -72,8 +72,8 @@ params:
 
 menu:
   main:
-    - name: Diffusion Models
-      url: /diffusion/
+    - name: Topics
+      url: /categories/
       weight: 10
     - name: All Posts
       url: /posts/
