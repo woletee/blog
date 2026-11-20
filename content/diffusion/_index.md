@@ -1,6 +1,7 @@
 ---
 title: "Diffusion Models"
 description: "A growing library of diffusion model papers, each rewritten as a plain-English explanation with pictures and runnable code. Start at the beginning and read forward."
+draft: true
 summary: "A growing library of diffusion model papers, each rewritten as a plain-English explanation with pictures and runnable code."
 ---
 

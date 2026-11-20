@@ -2,7 +2,7 @@
 title: "Understanding Transformers From a Research Paper"
 date: 2026-08-04
 url: "/understanding-transformers/"
-draft: false
+draft: true
 categories: ["Papers"]
 tags: ["machine-learning", "transformers", "python"]
 ---
