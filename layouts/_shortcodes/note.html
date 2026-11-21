@@ -1,0 +1,10 @@
+{{- /* Sticky note under a section heading.
+       {{< note >}}Catchy one-liner{{< /note >}}            beige taped note (default)
+       {{< note style="grid" >}}The big result{{< /note >}} torn grid paper on kraft
+       Tilt alternates left/right by order on the page. */ -}}
+{{- $style := .Get "style" | default "taped" -}}
+{{- $tilt := cond (modBool .Ordinal 2) "tilt-l" "tilt-r" -}}
+<aside class="sticky-note sticky-{{ $style }} {{ $tilt }}" role="note">
+  <span class="sticky-tape" aria-hidden="true"></span>
+  <div class="sticky-body">{{ .Inner | markdownify }}</div>
+</aside>

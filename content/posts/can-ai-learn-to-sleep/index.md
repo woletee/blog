@@ -16,6 +16,12 @@ This post is about why neural networks forget, how the sleeping brain avoids it,
 
 ## Why does AI forget everything it just learned?
 
+{{< note >}}
+Learn the new, **lose the old**.
+
+GPT-2 fell from 98% to 6% on its first facts.
+{{< /note >}}
+
 A neural network stores everything it knows in one shared set of weights. When you train it on something new, every weight is free to move toward the new task, and nothing protects the weights the old task relied on. So the new knowledge is written over the old. Researchers call this catastrophic forgetting; McCloskey and Cohen first described it in 1989.
 
 It is not the same as a model that does badly on unfamiliar data. That is domain shift: the model never learned the new data in the first place. Forgetting means the model *did* know something, learned something else, and lost the first thing.
@@ -24,6 +30,12 @@ You can watch it happen in a few minutes on a laptop. In my experiment GPT-2 lea
 
 ## Wait, doesn't ChatGPT remember me?
 
+{{< note >}}
+Chatbots don't remember you.
+
+They **reread their diary** every time you talk.
+{{< /note >}}
+
 It seems to, but it isn't learning. When a chatbot remembers what you said yesterday, it saved a note about you and pastes that note back into the prompt the next time you talk. The model's weights never change. It is like a person who can't form new memories reading their own diary every morning.
 
 That trick works because nothing is ever trained. The forgetting problem appears the moment you actually update the weights: fine-tuning a model on your company's documents, teaching it a new language, or adapting a medical model to a new scanner. Studies of 1–7B language models during continual fine-tuning found they forget general knowledge, and the larger models in the study forgot more ([Luo et al., 2023](https://arxiv.org/abs/2308.08747)).
@@ -31,6 +43,12 @@ That trick works because nothing is ever trained. The forgetting problem appears
 So the real question is: can a model learn new things *in its weights* without losing the old ones?
 
 ## How does the brain avoid this?
+
+{{< note >}}
+Learn fast by day, **file it away by night**.
+
+Sleep replays the day so the cortex can keep it.
+{{< /note >}}
 
 The brain splits the job between two systems. The hippocampus learns new experiences fast, sometimes after one exposure. The cortex learns slowly and holds what we know for years. This is the complementary learning systems theory ([McClelland, McNaughton and O'Reilly, 1995](https://doi.org/10.1037/0033-295X.102.3.419)).
 
@@ -41,6 +59,12 @@ The link between them is sleep. In 1994 Wilson and McNaughton recorded the same 
 Replay solves the forgetting problem. The cortex never learns the new memories alone: during sleep it sees them mixed with replays of older ones, so new learning doesn't overwrite old knowledge. And the brain doesn't keep a perfect recording to replay. It regenerates memories, more like dreaming than playing back a video.
 
 ## What has AI borrowed from sleep so far?
+
+{{< note >}}
+Three ways to **rehearse**:
+
+keep the real notes, dream fake ones, or dream the feeling.
+{{< /note >}}
 
 AI researchers have copied replay in three forms. Each one keeps something from the old task and mixes it into training on the new one.
 
@@ -55,6 +79,12 @@ The most complete version is [van de Ven, Siegelmann and Tolias (2020)](https://
 Language models have tried it too. [LAMOL (Sun et al., 2020)](https://arxiv.org/abs/1909.03329) had GPT-2 generate pseudo-examples of earlier tasks and train on them alongside new ones. [Self-Synthesized Rehearsal (Huang et al., 2024)](https://arxiv.org/abs/2403.01244) does the same with a large language model writing its own rehearsal data. Both are a kind of dreaming.
 
 ## Does it work on a real language model?
+
+{{< note style="grid" >}}
+Dream from a frozen memory: **58% kept**.
+
+No sleep: 6%.
+{{< /note >}}
 
 Yes. On GPT-2, every form of sleep that replayed real memories kept 6–10 times more old facts than no sleep, and a separate frozen memory worked best.
 
@@ -87,6 +117,12 @@ Averaged over all three seeds, the final scores look like this:
 
 ## Where does the sleep analogy break?
 
+{{< note >}}
+Sleep only saved **what it dreamed about**.
+
+Everything else still faded.
+{{< /note >}}
+
 The experiment borrows one idea from sleep, replay, and leaves most of the biology behind.
 
 - **Sleep only protected what it replayed.** GPT-2's perplexity on ordinary English rose from 27 to about 1,500 after learning set A, and to 6,300–10,300 after set B, with or without sleep. The dreams were about invented facts, so nothing protected its general English. The brain replays far more broadly.
@@ -99,6 +135,10 @@ The experiment borrows one idea from sleep, replay, and leaves most of the biolo
 The interesting gap is the third one. Sleep cycles failed because the model dreamed from a memory that was being overwritten. The brain avoids that by keeping the two stores apart, which is exactly what the frozen copy did.
 
 ## So, should AI sleep?
+
+{{< note >}}
+Yes, but **never dream from the mind you're changing**.
+{{< /note >}}
 
 If "sleep" means replaying old memories while learning new ones, from a memory that the new learning can't touch, then yes: on GPT-2 it was the best method I tried. It kept 58% of old facts against 6% with no sleep, and it needed no stored data.
 
