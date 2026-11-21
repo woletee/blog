@@ -44,7 +44,7 @@ params:
   ShowShareButtons: true
   comments: true
   # Formspree (or similar) form URL that receives the anonymous notes, e.g. https://formspree.io/f/abcd1234
-  feedbackEndpoint: ""
+  feedbackEndpoint: "https://formspree.io/f/xwlonolp"
   displayFullLangName: true
 
   homeInfoParams:
