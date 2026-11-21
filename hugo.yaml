@@ -53,7 +53,7 @@ params:
   homeInfoParams:
     Title: "Marya's Blog"
     Content: >
-      Small AI experiments, explained simply, with code you can run.
+      Small AI experiments, explained simply.
 
   socialIcons:
     - name: rss
