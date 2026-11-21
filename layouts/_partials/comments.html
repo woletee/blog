@@ -1,0 +1,84 @@
+{{- /* Anonymous feedback card shown at the end of every post (PaperMod's comments hook).
+       Messages go to the form endpoint in params.feedbackEndpoint; no name or email is asked. */ -}}
+{{- $endpoint := site.Params.feedbackEndpoint | default "" -}}
+<section class="bear-note" aria-labelledby="bear-note-title">
+  <svg class="bear" viewBox="0 0 160 112" width="160" height="112" aria-hidden="true">
+    <g stroke="#5b4422" stroke-width="4" stroke-linejoin="round">
+      <circle cx="40" cy="30" r="17" fill="#fff8e7"/>
+      <circle cx="120" cy="30" r="17" fill="#fff8e7"/>
+      <path d="M24 112 V62 C24 30 48 14 80 14 C112 14 136 30 136 62 V112 Z" fill="#fff8e7"/>
+    </g>
+    <circle cx="40" cy="30" r="8" fill="#f6d39a"/>
+    <circle cx="120" cy="30" r="8" fill="#f6d39a"/>
+    <g class="bear-eyes" fill="#3b2a14"><circle cx="62" cy="62" r="4.5"/><circle cx="98" cy="62" r="4.5"/></g>
+    <ellipse cx="50" cy="76" rx="9" ry="6" fill="#f7b6c2"/>
+    <ellipse cx="110" cy="76" rx="9" ry="6" fill="#f7b6c2"/>
+    <path d="M74 72 q6 7 12 0" fill="none" stroke="#3b2a14" stroke-width="3" stroke-linecap="round"/>
+    <g stroke="#5b4422" stroke-width="4" fill="#fff8e7"><ellipse cx="56" cy="110" rx="13" ry="10"/><ellipse cx="104" cy="110" rx="13" ry="10"/></g>
+  </svg>
+
+  <div class="bear-box">
+    <div class="bear-ask" data-state="ask">
+      <h2 id="bear-note-title">Did this help?</h2>
+      <p>Leave a note: a thank-you, a question, or a part that was confusing. No name or email needed.</p>
+      <form class="bear-form" action="{{ $endpoint }}" method="POST">
+        <label for="bear-msg" class="bear-sr">Your note</label>
+        <textarea id="bear-msg" name="message" rows="4" maxlength="2000" required placeholder="Write your note here…"></textarea>
+        <input type="hidden" name="page" value="{{ .Title }}">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="bear-sr" aria-hidden="true">
+        <div class="bear-row">
+          <span class="bear-hint">Anonymous. Only Marya can read it.</span>
+          <button type="submit">Send note</button>
+        </div>
+        <p class="bear-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="bear-thanks" data-state="thanks" hidden>
+      <h2>Thank you!</h2>
+      <p>Your note is on its way. If you asked a question, I may answer it in a future post.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bear-note { --bear-ink: #5b4422; --bear-cream: #fffbf2; margin: 64px auto 24px; max-width: 640px; display: flex; flex-direction: column; align-items: center; }
+  .bear-note .bear { display: block; margin-bottom: -4px; position: relative; z-index: 1; overflow: visible; }
+  .bear-note .bear-eyes { transform-origin: 80px 62px; animation: bear-blink 5s infinite; }
+  @keyframes bear-blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+  .bear-box { width: 100%; background: var(--bear-cream); border: 4px solid var(--bear-ink); border-radius: 36px; padding: 28px 30px 24px; color: #3b2a14; box-shadow: 0 6px 0 #5b442222; }
+  .bear-box h2 { margin: 0 0 6px; font-size: 26px; color: #3b2a14; text-align: center; }
+  .bear-box p { margin: 0 0 16px; text-align: center; color: #6b5435; font-size: 16px; line-height: 1.5; }
+  .bear-form textarea { width: 100%; box-sizing: border-box; border: 2.5px solid #d9c6a3; border-radius: 18px; padding: 14px 16px; font: inherit; font-size: 16px; color: #3b2a14; background: #fff; resize: vertical; min-height: 110px; }
+  .bear-form textarea:focus { outline: none; border-color: var(--bear-ink); box-shadow: 0 0 0 3px #f6d39a; }
+  .bear-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .bear-hint { font-size: 14px; color: #6b5435; }
+  .bear-form button { font: inherit; font-size: 16px; font-weight: 700; color: #3b2a14; background: #f6d39a; border: 3px solid var(--bear-ink); border-radius: 999px; padding: 10px 24px; min-height: 46px; cursor: pointer; box-shadow: 0 4px 0 var(--bear-ink); }
+  .bear-form button:hover { background: #f8c97a; }
+  .bear-form button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--bear-ink); }
+  .bear-form button:disabled { opacity: .6; cursor: wait; }
+  .bear-form button:focus-visible { outline: 3px solid #3b2a14; outline-offset: 3px; }
+  .bear-status { margin: 10px 0 0 !important; min-height: 1em; font-size: 14px !important; }
+  .bear-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .bear-note .bear-eyes { animation: none; } }
+</style>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling.previousElementSibling;
+    var form = root.querySelector(".bear-form");
+    var status = root.querySelector(".bear-status");
+    var button = form.querySelector("button");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!form.getAttribute("action")) { status.textContent = "Notes open soon. Thanks for your patience!"; return; }
+      button.disabled = true; status.textContent = "Sending…";
+      fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+        .then(function (r) {
+          if (!r.ok) throw new Error();
+          root.querySelector("[data-state=ask]").hidden = true;
+          root.querySelector("[data-state=thanks]").hidden = false;
+        })
+        .catch(function () { status.textContent = "Sorry, that didn't send. Please try again in a moment."; button.disabled = false; });
+    });
+  })();
+</script>
