@@ -104,5 +104,5 @@ do not. Nothing later depends on them.
 </div>
 
 Missing a paper you think belongs here, or spotted something I got wrong?
-[Open an issue](https://github.com/woletee/woletee.github.io/issues) — corrections
+[Open an issue](https://github.com/evo-quest/evo-quest.github.io/issues) — corrections
 are genuinely welcome.

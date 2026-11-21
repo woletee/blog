@@ -1,4 +1,4 @@
-baseURL: "https://woletee.github.io/"
+baseURL: "https://evo-quest.github.io/"
 locale: "en-us"
 title: "Marya's Blog"
 theme: ["PaperMod4"]
@@ -56,9 +56,6 @@ params:
       Small AI experiments, explained simply, with code you can run.
 
   socialIcons:
-    - name: github
-      title: "GitHub"
-      url: "https://github.com/woletee"
     - name: rss
       title: "RSS"
       url: "index.xml"

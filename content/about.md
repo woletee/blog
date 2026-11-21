@@ -23,6 +23,4 @@ Two rules I try to hold myself to:
    they are what the next paper is about.
 
 Corrections, arguments, and requests for papers to cover are all welcome:
-[open an issue](https://github.com/woletee/woletee.github.io/issues).
-
-Elsewhere: [GitHub](https://github.com/woletee).
+[open an issue](https://github.com/evo-quest/evo-quest.github.io/issues).
