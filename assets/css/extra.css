@@ -225,3 +225,78 @@ figure.diagram svg {
   background-color: currentColor; opacity: .75;
   -webkit-mask: var(--bullet-arrow) center / contain no-repeat; mask: var(--bullet-arrow) center / contain no-repeat;
 }
+
+/* ---------- Sticky notes under section headings (shortcode: note) ---------- */
+.sticky-note {
+  --note-ink: #2b2420;
+  position: relative;
+  width: min(440px, calc(100% - 28px));
+  margin: 22px auto 30px;
+  font-family: "Caveat", "Comic Sans MS", cursive;
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 1.18;
+  color: var(--note-ink);
+  text-align: center;
+}
+.sticky-note.tilt-l { transform: rotate(-1.6deg); }
+.sticky-note.tilt-r { transform: rotate(1.4deg); }
+.sticky-note .sticky-body { position: relative; z-index: 2; }
+.sticky-note .sticky-body p { margin: 0; }
+.sticky-note .sticky-body p + p { margin-top: 6px; font-size: 22px; font-weight: 600; }
+.sticky-note strong { font-weight: 700; background: linear-gradient(transparent 58%, #f3c26b88 58%); padding: 0 2px; }
+
+/* beige note, two loose sheets behind it, tape on top (style 1) */
+.sticky-taped .sticky-body {
+  background: #e8d5c0;
+  border: 2.5px solid var(--note-ink);
+  padding: 34px 30px 30px;
+  background-image:
+    linear-gradient(var(--note-ink), var(--note-ink)), linear-gradient(var(--note-ink), var(--note-ink)),
+    linear-gradient(var(--note-ink), var(--note-ink)), linear-gradient(var(--note-ink), var(--note-ink));
+  background-size: 34px 2.5px, 9px 2.5px, 2.5px 38px, 26px 2.5px;
+  background-position: right 18px top 16px, right 58px top 16px, left 12px top 22px, left 18px bottom 14px;
+  background-repeat: no-repeat;
+}
+.sticky-taped::before, .sticky-taped::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: #fffdf8; border: 2.5px solid var(--note-ink);
+}
+.sticky-taped::before { transform: rotate(-3.2deg) translate(-4px, 3px); }
+.sticky-taped::after  { transform: rotate(2.6deg) translate(5px, 4px); }
+.sticky-taped .sticky-tape {
+  position: absolute; z-index: 3; top: -16px; left: 50%;
+  width: 34px; height: 46px; transform: translateX(-50%) rotate(-7deg);
+  background: #fbfaf6e6; border: 2.5px solid var(--note-ink);
+  clip-path: polygon(0 6%, 22% 0, 45% 5%, 70% 0, 100% 4%, 100% 94%, 76% 100%, 52% 95%, 26% 100%, 0 95%);
+}
+.sticky-taped .sticky-tape::after {
+  content: ""; position: absolute; left: 7px; right: 7px; top: 19px; height: 2.5px; background: var(--note-ink);
+}
+
+/* torn grid paper on a scrap of kraft (style 2) */
+.sticky-grid { padding: 10px 0; }
+.sticky-grid::before {
+  content: ""; position: absolute; z-index: 0; inset: -4px -14px 4px 18px;
+  background: #b08a5e;
+  clip-path: polygon(2% 6%, 18% 0, 41% 4%, 63% 1%, 88% 5%, 100% 2%, 97% 31%, 100% 58%, 96% 82%, 99% 100%, 74% 96%, 49% 100%, 22% 95%, 0 98%, 3% 70%, 0 41%);
+  transform: rotate(3deg);
+}
+.sticky-grid .sticky-body {
+  padding: 30px 30px 32px;
+  background-color: #f7f6f2;
+  background-image:
+    linear-gradient(#c9cdd3 1px, transparent 1px),
+    linear-gradient(90deg, #c9cdd3 1px, transparent 1px);
+  background-size: 18px 18px;
+  clip-path: polygon(0 3%, 6% 0, 13% 2%, 20% 0, 27% 2%, 34% 0, 41% 2%, 48% 0, 55% 2%, 62% 0, 69% 2%, 76% 0, 83% 2%, 90% 0, 100% 2%,
+                     98% 22%, 100% 40%, 97% 61%, 100% 80%, 98% 100%, 80% 97%, 61% 100%, 40% 97%, 20% 100%, 1% 97%, 2% 76%, 0 52%, 2% 27%);
+  filter: drop-shadow(0 1px 0 #0002);
+}
+.sticky-grid .sticky-tape {
+  position: absolute; z-index: 3; top: -2px; right: -10px;
+  width: 92px; height: 30px; transform: rotate(32deg);
+  background: #e6e4dfdd; box-shadow: 0 1px 2px #0002;
+  clip-path: polygon(0 10%, 8% 0, 16% 12%, 24% 2%, 100% 0, 100% 100%, 92% 88%, 84% 100%, 76% 90%, 0 100%);
+}
+@media (max-width: 520px) { .sticky-note { font-size: 24px; } .sticky-taped .sticky-body { padding: 30px 22px 26px; } }
