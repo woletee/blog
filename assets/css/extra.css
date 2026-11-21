@@ -216,7 +216,12 @@ figure.diagram svg {
 .post-content ul.bullets-idea > li::before { -webkit-mask-image: var(--bullet-idea); mask-image: var(--bullet-idea); background-color: #c99a1e; }
 .post-content ul.bullets-clip > li::before { -webkit-mask-image: var(--bullet-clip); mask-image: var(--bullet-clip); }
 .post-content ul.bullets-arrow > li::before { background-color: #2f8a4f; }
-/* keep theme-styled lists (table of contents, tags) as they were */
-.post-content .toc ul { list-style: none; padding-left: 1em; }
-.post-content .toc ul > li { padding-left: 0; }
-.post-content .toc ul > li::before { content: none; }
+/* table of contents: small hand-drawn arrows instead of round dots */
+.toc ul { list-style: none; padding-left: .4em; }
+.toc ul ul { padding-left: 1.2em; }
+.toc li { position: relative; padding-left: 1.5em; margin: .3em 0; }
+.toc li::before {
+  content: ""; position: absolute; left: 0; top: .28em; width: 1em; height: 1em;
+  background-color: currentColor; opacity: .75;
+  -webkit-mask: var(--bullet-arrow) center / contain no-repeat; mask: var(--bullet-arrow) center / contain no-repeat;
+}
