@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marya's Lab: press start</title>
+<meta name="description" content="Press start to meet Marya: AI experiments, explained simply.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #170f24;
+    --night-2: #24173a;
+    --line: #f2e9ff;
+    --pink: #ff6fae;
+    --pink-dark: #c2457f;
+    --pink-soft: #ffd1e6;
+    --green: #7fd3a0;
+    --yellow: #ffd35c;
+    --blue: #6c8cff;
+    --ink: #2a1630;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--night);
+    color: var(--line);
+    font-family: "Press Start 2P", monospace;
+    overflow-x: hidden;
+    image-rendering: pixelated;
+  }
+  /* starfield */
+  .sky {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 27% 62%, #fff6 50%, transparent 51%),
+      radial-gradient(1px 1px at 44% 30%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 63% 12%, #fff6 50%, transparent 51%),
+      radial-gradient(1px 1px at 78% 48%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 91% 22%, #fff6 50%, transparent 51%),
+      radial-gradient(1px 1px at 7% 80%, #fff6 50%, transparent 51%),
+      radial-gradient(1px 1px at 55% 85%, #fff5 50%, transparent 51%),
+      linear-gradient(#1b1130, var(--night) 70%);
+  }
+  .floor {
+    position: fixed; left: -50%; right: -50%; bottom: -10vh; height: 45vh; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(#b05bd855 2px, transparent 2px),
+      linear-gradient(90deg, #b05bd855 2px, transparent 2px);
+    background-size: 60px 60px;
+    transform: perspective(300px) rotateX(60deg);
+    transform-origin: bottom;
+    animation: floor 4s linear infinite;
+    mask-image: linear-gradient(transparent, #000 40%);
+  }
+  @keyframes floor { to { background-position: 0 60px, 0 0; } }
+  .sprite { position: fixed; z-index: 1; pointer-events: none; }
+  .drift { animation: drift 40s linear infinite; }
+  .drift.slow { animation-duration: 65s; }
+  @keyframes drift { from { transform: translateX(-20vw); } to { transform: translateX(120vw); } }
+  .twinkle { animation: twinkle 1.6s steps(2) infinite; }
+  @keyframes twinkle { 50% { opacity: .25; transform: scale(.7); } }
+  .bob { animation: bob 1.2s steps(2) infinite; }
+  @keyframes bob { 50% { transform: translateY(-6px); } }
+
+  main { position: relative; z-index: 2; min-height: 100%; display: flex; align-items: safe center; justify-content: center; padding: 24px 16px; }
+  .screen { display: none; width: 100%; max-width: 1040px; }
+  .screen.on { display: block; animation: pop .25s steps(3); }
+  @keyframes pop { from { opacity: 0; transform: scale(.96); } }
+
+  /* title screen */
+  .frame {
+    position: relative; border: 4px solid var(--line); border-radius: 28px;
+    padding: 56px 24px 48px; text-align: center; background: #170f24cc;
+    box-shadow: 0 0 0 4px var(--night), 0 0 40px #b05bd833;
+  }
+  .kicker { font-size: 12px; color: var(--yellow); letter-spacing: 2px; }
+  .kicker span { display: inline-block; width: 12px; height: 12px; background: var(--yellow); border-radius: 50%; vertical-align: -1px; margin: 0 10px; box-shadow: inset -3px -3px 0 #c99a1e; }
+  h1.big {
+    margin: 22px 0 10px; font-size: clamp(36px, 9vw, 84px); line-height: 1; color: #fff;
+    text-shadow: 4px 4px 0 var(--pink-dark), 8px 8px 0 #00000066;
+  }
+  .sub { font-family: VT323, monospace; font-size: 26px; color: #d9c8f5; margin: 0 0 34px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .btn {
+    font: inherit; font-size: 14px; letter-spacing: 2px; color: var(--ink); cursor: pointer;
+    padding: 16px 28px; min-width: 150px; min-height: 52px; border: 0; border-radius: 999px;
+    background: var(--yellow); box-shadow: inset 0 -6px 0 #c99a1e, 0 6px 0 #00000055;
+    text-decoration: none; display: inline-block;
+  }
+  .btn.blue { background: var(--blue); color: #fff; box-shadow: inset 0 -6px 0 #4562c9, 0 6px 0 #00000055; }
+  .btn.pink { background: var(--pink); color: #fff; box-shadow: inset 0 -6px 0 var(--pink-dark), 0 6px 0 #00000055; }
+  .btn:hover, .btn:focus-visible { transform: translateY(-2px); outline: 3px solid #fff; outline-offset: 3px; }
+  .btn:active { transform: translateY(3px); box-shadow: inset 0 -2px 0 #0003; }
+  .blink { animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: .35; } }
+  .hud { display: flex; justify-content: space-between; align-items: center; margin-top: 34px; padding: 0 12px; gap: 12px; flex-wrap: wrap; }
+  .hud .row { display: flex; gap: 6px; }
+
+  /* dialogue */
+  .talk { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .talk .hero { width: 192px; height: 168px; }
+  .bubble {
+    width: 100%; max-width: 760px; min-height: 170px; background: #fff; color: var(--ink);
+    border: 4px solid var(--ink); border-radius: 10px; padding: 24px 26px 40px; position: relative;
+    box-shadow: 0 0 0 4px var(--line), 8px 8px 0 4px #0006;
+    font-family: VT323, monospace; font-size: 30px; line-height: 1.25;
+  }
+  .bubble .who { position: absolute; top: -20px; left: 20px; background: var(--pink); color: #fff; font-family: "Press Start 2P", monospace; font-size: 12px; padding: 8px 12px; border: 4px solid var(--ink); }
+  .bubble .next { position: absolute; right: 18px; bottom: 12px; font-family: "Press Start 2P", monospace; font-size: 11px; color: var(--pink-dark); }
+  .bubble button { all: unset; position: absolute; inset: 0; cursor: pointer; }
+  .bubble button:focus-visible { outline: 3px dashed var(--pink); outline-offset: -10px; }
+
+  /* about board */
+  .marquee { overflow: hidden; background: var(--blue); border-block: 4px solid var(--ink); margin: 0 -16px 28px; }
+  .marquee div { display: inline-block; white-space: nowrap; padding: 10px 0; font-size: 14px; color: #fff; animation: marquee 18s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .board { display: grid; grid-template-columns: 1fr 1.2fr 1fr; grid-template-areas: "level console hello" "weapons log skills"; gap: 28px 26px; align-items: start; }
+  .level { grid-area: level; padding-top: 10px; }
+  .level h2 { margin: 0; font-size: clamp(28px, 4vw, 44px); line-height: 1.1; color: var(--pink-soft); text-shadow: 3px 3px 0 var(--pink-dark); }
+  .level p { margin: 14px 0 0; font-size: 12px; line-height: 1.6; color: var(--pink-soft); }
+  .level .name { margin-top: 22px; font-size: clamp(22px, 3vw, 30px); color: var(--green); text-shadow: 3px 3px 0 #2d6b47; }
+  .console { grid-area: console; justify-self: center; width: min(100%, 340px); }
+  .shell { background: var(--pink); border: 4px solid var(--ink); border-radius: 22px; padding: 16px; box-shadow: inset -6px -6px 0 var(--pink-dark), 8px 8px 0 #0007; }
+  .top { background: #3a2a44; border: 4px solid var(--ink); border-radius: 12px; padding: 12px 14px; }
+  .lcd { background: #9fd8a9; border: 4px solid var(--ink); height: 170px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .lcd .zz { position: absolute; top: 14px; right: 22px; font-size: 12px; color: var(--ink); animation: zz 2s steps(4) infinite; }
+  @keyframes zz { 0% { opacity: 0; transform: translate(0, 6px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -10px); } }
+  .hinge { height: 14px; margin: 0 26px; background: var(--pink-dark); border-inline: 4px solid var(--ink); }
+  .bottom { display: grid; grid-template-columns: 56px 1fr 56px; gap: 12px; align-items: center; background: var(--pink); }
+  .pad { width: 52px; height: 52px; position: relative; }
+  .pad::before, .pad::after { content: ""; position: absolute; background: var(--ink); }
+  .pad::before { left: 18px; top: 0; width: 16px; height: 52px; }
+  .pad::after { top: 18px; left: 0; width: 52px; height: 16px; }
+  .touch { background: var(--pink-soft); border: 4px solid var(--ink); height: 92px; background-image: linear-gradient(#c2457f33 2px, transparent 2px), linear-gradient(90deg, #c2457f33 2px, transparent 2px); background-size: 16px 16px; }
+  .abxy { display: grid; grid-template-columns: repeat(2, 18px); gap: 8px; justify-content: center; }
+  .abxy i { width: 18px; height: 18px; border-radius: 50%; background: var(--pink-soft); border: 3px solid var(--ink); }
+  .win { background: var(--pink-soft); color: var(--ink); border: 4px solid var(--ink); box-shadow: 6px 6px 0 #0007; }
+  .win .bar { background: var(--pink); border-bottom: 4px solid var(--ink); height: 26px; display: flex; justify-content: flex-end; gap: 4px; padding: 3px 4px; }
+  .win .bar i { width: 14px; height: 14px; background: var(--pink-soft); border: 2px solid var(--ink); }
+  .win .body { padding: 14px 16px 18px; font-family: VT323, monospace; font-size: 22px; line-height: 1.15; }
+  .win h3 { margin: 0 0 12px; font-family: "Press Start 2P", monospace; font-size: 11px; text-align: center; background: var(--yellow); border: 3px solid var(--ink); padding: 8px; }
+  .win p { margin: 0 0 8px; }
+  .win b { color: var(--pink-dark); font-weight: normal; }
+  .win ul { margin: 0; padding-left: 18px; }
+  .hello { grid-area: hello; } .weapons { grid-area: weapons; } .log { grid-area: log; } .skills { grid-area: skills; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span { background: #fff; border: 3px solid var(--ink); padding: 4px 8px; font-size: 20px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 34px; }
+
+  /* quest log */
+  .quests h2 { text-align: center; font-size: clamp(22px, 4vw, 34px); color: var(--yellow); text-shadow: 3px 3px 0 #9a6b00; margin: 0 0 28px; }
+  .qgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  .quest { text-decoration: none; }
+  .quest .body { min-height: 150px; }
+  .tag { display: inline-block; margin-top: 8px; padding: 4px 8px; border: 3px solid var(--ink); font-size: 18px; }
+  .tag.done { background: var(--green); } .tag.wip { background: var(--yellow); }
+  .quest:hover .win, .quest:focus-visible .win { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 #0007; }
+  .quest:focus-visible { outline: none; }
+
+  @media (max-width: 860px) {
+    .board { grid-template-columns: 1fr; grid-template-areas: "level" "console" "hello" "weapons" "log" "skills"; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; }
+  }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="floor" aria-hidden="true"></div>
+<div id="decor" aria-hidden="true"></div>
+
+<main>
+  <!-- TITLE -->
+  <section class="screen on" id="title" aria-labelledby="t-h">
+    <div class="frame">
+      <div class="kicker"><span></span>MARYA'S LAB<span></span></div>
+      <h1 class="big" id="t-h">WELCOME</h1>
+      <p class="sub">AI experiments, explained simply.</p>
+      <div class="buttons">
+        <button class="btn" data-go="quests">MENU</button>
+        <button class="btn blue" data-go="talk" id="startBtn"><span class="blink">START</span></button>
+        <a class="btn" href="https://github.com/woletee">EXIT</a>
+      </div>
+      <div class="hud">
+        <div class="row" data-sprite="heart" data-n="5" aria-label="5 lives"></div>
+        <div class="row" data-sprite="gem" data-n="4" aria-label="4 gems"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIALOGUE -->
+  <section class="screen" id="talk" aria-label="Introduction">
+    <div class="talk">
+      <div class="hero bob" data-sprite="brain" data-scale="12"></div>
+      <div class="bubble" aria-live="polite">
+        <div class="who">MARYA</div>
+        <span id="line"></span>
+        <div class="next blink">CLICK ▶</div>
+        <button id="advance" aria-label="Next line"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="screen" id="about" aria-labelledby="lvl-h">
+    <div class="marquee" aria-hidden="true"><div>★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★ About Me ★&nbsp;</div></div>
+    <div class="board">
+      <div class="level">
+        <h2 id="lvl-h">LEVEL<br>01</h2>
+        <p>Meet the<br>player</p>
+        <div class="name">MARYA</div>
+      </div>
+
+      <div class="console" aria-hidden="true">
+        <div class="shell">
+          <div class="top"><div class="lcd"><div data-sprite="brain" data-scale="7" class="bob"></div><span class="zz">Zz</span></div></div>
+        </div>
+        <div class="hinge"></div>
+        <div class="shell"><div class="bottom"><div class="pad"></div><div class="touch"></div><div class="abxy"><i></i><i></i><i></i><i></i></div></div></div>
+      </div>
+
+      <div class="win hello"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+        <h3>HELLO !!</h3>
+        <p><b>Player:</b> Marya</p>
+        <p><b>Role:</b> AI researcher and blogger</p>
+        <p><b>Mission:</b> make AI papers easy to read, see and run.</p>
+        <p><b>Status:</b> testing whether AI can learn to sleep.</p>
+        <p>Let's start the game!</p>
+      </div></div>
+
+      <div class="win weapons"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+        <h3>WEAPONS MASTERY</h3>
+        <div class="chips"><span>Python</span><span>PyTorch</span><span>MONAI</span><span>Hugging Face</span><span>Colab</span><span>Hugo</span></div>
+      </div></div>
+
+      <div class="win log"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+        <h3>TRAINING LOG</h3>
+        <p><b>Nov 2026:</b> ran GPT-2 sleep experiments, 3 seeds</p>
+        <p><b>Now:</b> designing Paper to Code</p>
+        <p><b>Next:</b> repeat the sleep test on a bigger model</p>
+      </div></div>
+
+      <div class="win skills"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+        <h3>SKILLS MASTERY</h3>
+        <ul>
+          <li>Diffusion models</li>
+          <li>Medical image translation (MRI → CT)</li>
+          <li>Continual learning</li>
+          <li>Experiment design</li>
+          <li>Technical writing</li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="actions">
+      <button class="btn" data-go="title">◀ TITLE</button>
+      <button class="btn pink" data-go="quests">NEXT LEVEL ▶</button>
+    </div>
+  </section>
+
+  <!-- QUEST LOG -->
+  <section class="screen quests" id="quests" aria-labelledby="q-h">
+    <h2 id="q-h">QUEST LOG</h2>
+    <div class="qgrid">
+      <a class="quest" href="https://woletee.github.io/diffusion-papers-/can-ai-learn-to-sleep/">
+        <div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+          <h3>QUEST 1</h3>
+          <p>Can AI learn to sleep? A GPT-2 experiment on forgetting.</p>
+          <span class="tag done">CLEARED</span>
+        </div></div>
+      </a>
+      <a class="quest" href="https://woletee.github.io/diffusion-papers-/">
+        <div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+          <h3>QUEST 2</h3>
+          <p>Paper to Code: papers you can read, see and run.</p>
+          <span class="tag wip">IN PROGRESS</span>
+        </div></div>
+      </a>
+      <a class="quest" href="https://github.com/woletee">
+        <div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="body">
+          <h3>QUEST 3</h3>
+          <p>MRI to CT: translating scans with diffusion models.</p>
+          <span class="tag wip">IN PROGRESS</span>
+        </div></div>
+      </a>
+    </div>
+    <div class="actions">
+      <button class="btn" data-go="title">◀ TITLE</button>
+      <button class="btn blue" data-go="about">ABOUT ME</button>
+    </div>
+  </section>
+</main>
+
+<script>
+  // tiny pixel-art renderer: each string row is a line of pixels
+  const ART = {
+    heart: { c: { r: "#ff5a7a", R: "#c23656", w: "#ffd1dc" }, m: [".rr.rr.", "rwrrrrR", "rrrrrrR", ".rrrrR.", "..rrR..", "...R..."] },
+    gem:   { c: { c: "#ffb3d9", C: "#ff6fae", w: "#ffffff" }, m: [".ccccc.", "cwCcCCc", ".cCCCc.", "..cCc..", "...c..."] },
+    star:  { c: { y: "#ffe27a", Y: "#ffffff" }, m: ["..y..", "..y..", "yyYyy", "..y..", "..y.."] },
+    cloud: { c: { w: "#f2e9ff", p: "#a98be0", P: "#7a5cc0" }, m: ["....wwww......", "..wwwwwwwww...", ".wwwwwwwwwwww.", "wwwpwwwwwwwppw", ".pppPPPPPPPpp."] },
+    moon:  { c: { y: "#ffe27a", Y: "#f2c84b", o: "#d9a92a" }, m: ["..yyyyy..", ".yyyyyYy.", "yyyoyyyYy", "yyyyyyyyY", "yyyyyoyyY", "yoyyyyyyY", ".yyyyyYY.", "..yYYYY.."] },
+    brain: { c: { p: "#ff9ecf", P: "#e86aa8", k: "#2a1630", w: "#ffffff" }, m: [
+      "....pppppppp....",
+      "..ppPPppppPPpp..",
+      ".pPPppPPPPppPPp.",
+      "pPppPPppppPPppPp",
+      "pppPPppPPppPPppp",
+      "pPPppPPppPPppPPp",
+      "ppppkkkppkkkpppp",
+      "pPPppppppppppPPp",
+      ".ppppppkkppppPp.",
+      "..pPpppppppPpp..",
+      "....pppppppp....",
+      ".....kk..kk....."] }
+  };
+  function svg(name, scale) {
+    const a = ART[name], h = a.m.length, w = a.m[0].length;
+    let r = "";
+    a.m.forEach((row, y) => [...row].forEach((ch, x) => { if (a.c[ch]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${a.c[ch]}"/>`; }));
+    return `<svg width="${w * scale}" height="${h * scale}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
+  }
+  document.querySelectorAll("[data-sprite]").forEach(el => {
+    const n = +(el.dataset.n || 1), s = +(el.dataset.scale || 4);
+    el.innerHTML = Array.from({ length: n }, () => svg(el.dataset.sprite, s)).join("");
+  });
+
+  // background decorations
+  const decor = document.getElementById("decor");
+  const place = (name, scale, style, cls) => {
+    const d = document.createElement("div");
+    d.className = "sprite " + (cls || ""); d.style.cssText = style; d.innerHTML = svg(name, scale);
+    decor.appendChild(d);
+  };
+  place("moon", 9, "top:5vh;left:16vw;");
+  place("cloud", 6, "top:9vh;left:0;", "drift");
+  place("cloud", 4, "top:26vh;left:0;animation-delay:-25s", "drift slow");
+  place("cloud", 5, "top:62vh;left:0;animation-delay:-12s", "drift slow");
+  [["8vh", "70vw", 0], ["20vh", "88vw", .4], ["40vh", "6vw", .8], ["55vh", "93vw", 1.1], ["14vh", "40vw", .6], ["72vh", "12vw", 1.3]].forEach(([t, l, d]) =>
+    place("star", 4, `top:${t};left:${l};animation-delay:${d}s`, "twinkle"));
+
+  // screens
+  const show = id => {
+    document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
+    if (id === "talk") startTalk();
+    const f = document.querySelector(`#${id} button, #${id} a`); if (f) f.focus({ preventScroll: true });
+  };
+  document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(b.dataset.go)));
+
+  // typewriter dialogue
+  const LINES = [
+    "Hi, I'm Marya!",
+    "I take AI research papers and turn them into small experiments you can run.",
+    "Lately I've been asking: can AI learn to sleep?",
+    "Ready to meet the player?"
+  ];
+  let li = 0, ci = 0, timer = null;
+  const lineEl = document.getElementById("line");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function type() {
+    clearInterval(timer);
+    const text = LINES[li]; ci = 0;
+    if (reduce) { lineEl.textContent = text; ci = text.length; return; }
+    lineEl.textContent = "";
+    timer = setInterval(() => {
+      lineEl.textContent = text.slice(0, ++ci);
+      if (ci >= text.length) clearInterval(timer);
+    }, 38);
+  }
+  function startTalk() { li = 0; type(); }
+  function advance() {
+    if (ci < LINES[li].length) { clearInterval(timer); lineEl.textContent = LINES[li]; ci = LINES[li].length; return; }
+    if (++li >= LINES.length) { show("about"); return; }
+    type();
+  }
+  document.getElementById("advance").addEventListener("click", advance);
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const on = document.querySelector(".screen.on").id;
+    if (on === "title" && document.activeElement === document.body) { e.preventDefault(); show("talk"); }
+  });
+</script>
+</body>
+</html>
