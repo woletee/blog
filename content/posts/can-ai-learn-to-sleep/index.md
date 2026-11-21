@@ -12,7 +12,7 @@ tags: ["catastrophic-forgetting", "continual-learning", "neuroscience", "gpt-2"]
 
 I taught GPT-2 120 made-up facts, then 120 more, and it lost almost all of the first set: recall fell from 98% to 6%. Then I let it "sleep", replaying its own dreams of the old facts while it learned the new ones. It kept 40%. Giving it a separate, frozen memory to dream from, like a hippocampus, kept 58%, the best result in every run.
 
-This post is about why neural networks forget, how the sleeping brain avoids it, and what happened when I tried the brain's trick on a real language model.
+This post is about why neural networks forget, how the sleeping brain avoids it, and what happened when I tried the brain's trick on a real language model. The code is on [GitHub](https://github.com/woletee/can-ai-learn-to-sleep) if you want to rerun it.
 
 ## Why does AI forget everything it just learned?
 
@@ -159,7 +159,7 @@ The second lesson contrasts with the image-model results of van de Ven and colle
 
 ## Method notes and references
 
-**Want the code?** Leave a note in the box below and I'll share it.
+**Run it yourself.** All the code, notebooks and results are on GitHub: [woletee/can-ai-learn-to-sleep](https://github.com/woletee/can-ai-learn-to-sleep). It is one Python script (`sleep_experiment.py`) plus a Colab notebook for larger Qwen models. Each GPT-2 seed takes about 50 minutes on a laptop CPU.
 
 | Setting | Value |
 | --- | --- |

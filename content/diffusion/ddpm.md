@@ -511,5 +511,5 @@ fresh randomness whose only job is to keep the walk from collapsing to the mean.
   [reading list](/diffusion/) for what is coming after that.
 
 *Found an error, or an explanation that did not land? [Tell
-me](https://github.com/evo-quest/evo-quest.github.io/issues) — I would rather fix it
+me](https://github.com/woletee/woletee.github.io/issues) — I would rather fix it
 than leave it wrong.*
