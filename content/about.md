@@ -7,7 +7,7 @@ ShowToc: false
 hideMeta: true
 ---
 
-Hi, I'm Marya. This is where I learn about AI in public.
+Hi, I'm Marya.
 
 {{< noterow >}}
 {{< note >}}
