@@ -94,6 +94,7 @@ The experiment borrows one idea from sleep, replay, and leaves most of the biolo
 - **The hippocampus is a frozen copy, not a learner.** Mine never changes. A real hippocampus keeps learning, and over weeks hands memories to the cortex until it no longer needs them.
 - **Recall was graded on exact words.** A fact counts only if the model writes the exact first word of the answer. That is strict, and it says nothing about meaning or reasoning.
 - **It is small.** One 124M model, 120 facts per set, three seeds. That is enough to say the result is consistent, not enough to say it holds for large models.
+{.bullets-warn}
 
 The interesting gap is the third one. Sleep cycles failed because the model dreamed from a memory that was being overwritten. The brain avoids that by keeping the two stores apart, which is exactly what the frozen copy did.
 
@@ -114,6 +115,7 @@ The second lesson contrasts with the image-model results of van de Ven and colle
 - Repeat the run on a 0.5–1.5B model with LoRA (Qwen2.5-0.5B, DeepSeek-R1-Distill-Qwen-1.5B) on a free Colab GPU.
 - Replay general English as well as facts, to see if sleep can protect the model's language too.
 - Let the hippocampus slowly catch up with the cortex, instead of staying frozen forever.
+{.bullets-idea}
 
 ## Method notes and references
 
@@ -140,3 +142,4 @@ The second lesson contrasts with the image-model results of van de Ven and colle
 - [Sun, Ho and Lee (2020)](https://arxiv.org/abs/1909.03329), LAMOL: language modeling for lifelong language learning.
 - [Huang et al. (2024)](https://arxiv.org/abs/2403.01244), Mitigating catastrophic forgetting in large language models with self-synthesized rehearsal.
 - [Luo et al. (2023)](https://arxiv.org/abs/2308.08747), An empirical study of catastrophic forgetting in large language models during continual fine-tuning.
+{.bullets-clip}
